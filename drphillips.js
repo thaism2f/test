@@ -1,8 +1,8 @@
-// Sisters Windermere calendar — Missionary Meals
+// Elders Dr Phillips calendar — Missionary Meals
 // Vanilla JS + SheetDB
 (function(){'use strict';
   const SHEETDB = 'https://sheetdb.io/api/v1/wr8bptn1wll6e';
-  const GROUP   = 'Sisters Windermere';
+  const GROUP   = 'Elders Dr Phillips';
 
   // --- State ---
   let current = new Date(); current.setDate(1); // first of month

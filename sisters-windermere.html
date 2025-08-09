@@ -2,36 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sisters Windermere Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🥗 Sisters Windermere – Calendar</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-group="Sisters Windermere">
-  <header class="topbar">
-    <h1>🥗 Sisters Windermere – <span id="month-title"></span></h1>
+<body>
+  <main class="container">
+    <h1 class="page-title">🥗 Sisters Windermere – <span id="month-title"></span></h1>
+
     <nav class="calendar-nav">
-      <button type="button" onclick="changeMonth(-1)">⬅️ Back</button>
-      <button type="button" onclick="goHome()">🏠 Home</button>
-      <button type="button" onclick="changeMonth(1)">Next ➡️</button>
+      <button class="nav-btn" onclick="changeMonth(-1)">⬅️ Previous</button>
+      <button class="nav-btn" onclick="goHome()">🏠 Home</button>
+      <button class="nav-btn" onclick="changeMonth(1)">Next ➡️</button>
     </nav>
-  </header>
 
-  <section class="legend">
-    <div>Tap a date to sign up</div>
-  </section>
+    <div class="weekdays" aria-hidden="true">
+      <div>Sun</div><div>Mon</div><div>Tue</div>
+      <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
 
-  <div class="weekdays">
-    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-  </div>
-  <div class="calendar" id="calendar" role="grid" aria-label="Calendar"></div>
+    <section id="calendar" class="calendar" role="grid" aria-label="Calendar"></section>
 
-  <form id="form" class="signup-form" onsubmit="event.preventDefault(); submitForm();" style="display:none;">
-    <p id="selected-date-label"></p>
-    <label for="name" class="sr-only">Your Name</label>
-    <input type="text" id="name" placeholder="Your Name" autocomplete="name" />
-    <button type="submit">Submit</button>
-  </form>
+    <form id="form" class="signup-form" onsubmit="event.preventDefault(); submitForm();" style="display:none;">
+      <p id="selected-date-label" class="selected-label"></p>
+      <label for="name" class="sr-only">Your Name</label>
+      <input id="name" class="name-input" type="text" inputmode="text" autocomplete="name" placeholder="Your Name" />
+      <button type="submit" class="submit-btn">Submit</button>
+      <p class="hint">Tip: Submit with an empty name to clear this date.</p>
+    </form>
 
-  <script src="calendar.js"></script>
+    <p id="toast" class="toast" role="status" aria-live="polite" style="display:none;"></p>
+  </main>
+
+  <script src="sisters.js"></script>
 </body>
 </html>

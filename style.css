@@ -1,119 +1,93 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f9f9f9;
-  padding: 10px;
-  text-align: center;
-  margin: 0;
-}
-h1 {
-  color: #333;
-  font-size: 1.5em;
-  margin: 20px 10px;
-}
-.buttons {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-.button {
-  padding: 15px 25px;
-  font-size: 18px;
-  background: #0077cc;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 320px;
-}
-.button.disabled {
-  background: #ccc;
-  pointer-events: none;
-}
-.calendar-nav {
-  margin: 15px;
-}
-.calendar-nav button {
-  font-size: 16px;
-  margin: 0 5px;
-  padding: 10px 15px;
-}
-.weekdays, .calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  max-width: 600px;
-  margin: 0 auto;
-  font-size: 14px;
-}
-.weekdays {
-  font-weight: bold;
-  background: #f0f0f0;
-}
-.calendar {
-  gap: 5px;
-}
-.day {
-  background: white;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  height: 70px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.day:hover {
-  background: #e0f7fa;
-}
-.signup-name {
-  font-size: 0.85em;
-  color: green;
-}
-#form {
-  margin-top: 20px;
-  display: none;
-}
-input, button {
-  padding: 10px;
-  margin: 5px;
-  font-size: 16px;
-  width: 90%;
-  max-width: 300px;
+/* Missionary Meals — mobile-first styles */
+:root{
+  --bg:#f7f7f7;
+  --text:#222;
+  --muted:#666;
+  --accent:#1a73e8;
+  --card:#ffffff;
+  --line:#e5e5e5;
+  --ok:#0a8f36;
+  --warn:#b00020;
 }
 
-@media (max-width: 600px) {
-  .weekdays, .calendar {
-    font-size: 12px;
-    grid-template-columns: repeat(7, 1fr);
-  }
-  .day {
-    height: 60px;
-    padding: 6px;
-  }
-  h1 {
-    font-size: 1.3em;
-  }
-  .calendar-nav button {
-    font-size: 14px;
-    padding: 8px 10px;
-  }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, 'Apple Color Emoji','Segoe UI Emoji';
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-.topbar { display:flex; align-items:center; justify-content: space-between; gap: 12px; }
-.calendar-nav { display:flex; gap: 8px; }
-.weekdays { display:grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 10px 0 6px; font-weight: 600; }
-.weekdays > div { text-align:center; }
-.calendar { display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-.day { min-height: 70px; padding: 6px; border: 1px solid #ddd; border-radius: 8px; background: #fff; display:flex; flex-direction: column; justify-content: space-between; cursor:pointer; }
-.day.muted { opacity: 0.5; }
-.day-num { font-weight: 700; font-size: 14px; }
-.signup-name { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.signup-form { margin-top: 12px; display:flex; gap: 8px; align-items:center; }
-.signup-form input { padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
-.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-@media (max-width: 600px) {
-  .day { min-height: 56px; }
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:16px;
+}
+
+.app-title,.page-title{margin:10px 0 6px; text-align:center; font-size:clamp(22px, 4.8vw, 34px)}
+.subtitle{ text-align:center; color:var(--muted); margin:0 0 18px; }
+
+.buttons{ display:grid; gap:14px; grid-template-columns:1fr; }
+.button{
+  display:block; text-align:center; padding:18px 16px; border-radius:14px;
+  background:linear-gradient(#fff,#f1f1f1); border:1px solid var(--line);
+  text-decoration:none; color:var(--text); font-size:18px; font-weight:700;
+  box-shadow:0 1px 0 rgba(0,0,0,0.04);
+}
+.button:active{ transform:translateY(1px) }
+
+.calendar-nav{
+  display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:10px 0 6px;
+}
+.nav-btn{
+  padding:12px 14px; border-radius:12px; border:1px solid var(--line);
+  background:#fff; font-size:16px;
+}
+
+.weekdays{
+  display:grid; grid-template-columns:repeat(7, 1fr); gap:6px;
+  font-weight:700; color:#111; margin:10px 0 6px;
+}
+.weekdays>div{ text-align:center; background:#ececec; padding:6px 0; border-radius:10px; }
+
+.calendar{
+  display:grid; grid-template-columns:repeat(7, 1fr); gap:6px;
+}
+
+.day{
+  display:flex; flex-direction:column; justify-content:space-between;
+  border:1px solid var(--line); border-radius:12px; background:var(--card);
+  padding:8px; min-height:82px; aspect-ratio:1/1; /* keeps square-ish cells */
+  cursor:pointer; text-align:left;
+}
+.day:focus{ outline:3px solid var(--accent) }
+.day.muted{ opacity:0.55 }
+.day .num{ font-weight:800; font-size:16px }
+.day .signup{ font-weight:800; font-size:1.1rem; color:var(--ok); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.today{ box-shadow:0 0 0 2px rgba(26,115,232,.25) inset; }
+
+.signup-form{
+  margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+}
+.name-input{
+  flex:1 1 200px; padding:12px; font-size:16px; border-radius:10px; border:1px solid var(--line);
+}
+.submit-btn{ padding:12px 16px; font-size:16px; border-radius:10px; border:1px solid var(--line); background:#fff }
+.selected-label{ font-weight:600 }
+.hint{ color:var(--muted); margin:0 }
+
+.toast{
+  position:fixed; left:50%; transform:translateX(-50%);
+  bottom:18px; background:#111; color:#fff; padding:10px 14px; border-radius:999px; font-size:14px;
+  box-shadow:0 6px 24px rgba(0,0,0,.18);
+}
+
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+@media (min-width:660px){
+  .buttons{ grid-template-columns:repeat(3,1fr) }
 }
