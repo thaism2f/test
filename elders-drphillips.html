@@ -5,8 +5,8 @@
   <title>Elders Dr Phillips Calendar</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h1>🍲 Elders Dr Phillips – <span id="month-title">August 2025</span></h1>
+<body data-group="Elders Dr Phillips">
+  <h1>🍲 Elders Dr Phillips – <span id="month-title"></span></h1>
   <div class="calendar-nav">
     <button onclick="changeMonth(-1)">⬅️ Back</button>
     <button onclick="goHome()">🏠 Home</button>
@@ -21,6 +21,7 @@
     <input type="text" id="name" placeholder="Your Name">
     <button onclick="submitForm()">Submit</button>
   </div>
-  <script src="drphillips-multi.js"></script>
+  
+  <script src="calendar.js"></script>
 </body>
 </html>
