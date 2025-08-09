@@ -1,0 +1,104 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  padding: 10px;
+  text-align: center;
+  margin: 0;
+}
+h1 {
+  color: #333;
+  font-size: 1.5em;
+  margin: 20px 10px;
+}
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.button {
+  padding: 15px 25px;
+  font-size: 18px;
+  background: #0077cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 320px;
+}
+.button.disabled {
+  background: #ccc;
+  pointer-events: none;
+}
+.calendar-nav {
+  margin: 15px;
+}
+.calendar-nav button {
+  font-size: 16px;
+  margin: 0 5px;
+  padding: 10px 15px;
+}
+.weekdays, .calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 14px;
+}
+.weekdays {
+  font-weight: bold;
+  background: #f0f0f0;
+}
+.calendar {
+  gap: 5px;
+}
+.day {
+  background: white;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 70px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.day:hover {
+  background: #e0f7fa;
+}
+.signup-name {
+  font-size: 0.85em;
+  color: green;
+}
+#form {
+  margin-top: 20px;
+  display: none;
+}
+input, button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+  width: 90%;
+  max-width: 300px;
+}
+
+@media (max-width: 600px) {
+  .weekdays, .calendar {
+    font-size: 12px;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .day {
+    height: 60px;
+    padding: 6px;
+  }
+  h1 {
+    font-size: 1.3em;
+  }
+  .calendar-nav button {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}

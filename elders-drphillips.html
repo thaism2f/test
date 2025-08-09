@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Elders Dr Phillips Calendar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🍲 Elders Dr Phillips – <span id="month-title">August 2025</span></h1>
+  <div class="calendar-nav">
+    <button onclick="changeMonth(-1)">⬅️ Back</button>
+    <button onclick="goHome()">🏠 Home</button>
+    <button onclick="changeMonth(1)">Next ➡️</button>
+  </div>
+  <div class="weekdays">
+    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+  </div>
+  <div class="calendar" id="calendar"></div>
+  <div id="form">
+    <p id="selected-date-label"></p>
+    <input type="text" id="name" placeholder="Your Name">
+    <button onclick="submitForm()">Submit</button>
+  </div>
+  <script src="drphillips-multi.js"></script>
+</body>
+</html>
