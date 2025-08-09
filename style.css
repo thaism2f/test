@@ -1,4 +1,3 @@
-
 body {
   font-family: Arial, sans-serif;
   background: #f9f9f9;
@@ -101,4 +100,20 @@ input, button {
     font-size: 14px;
     padding: 8px 10px;
   }
+}
+
+.topbar { display:flex; align-items:center; justify-content: space-between; gap: 12px; }
+.calendar-nav { display:flex; gap: 8px; }
+.weekdays { display:grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 10px 0 6px; font-weight: 600; }
+.weekdays > div { text-align:center; }
+.calendar { display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.day { min-height: 70px; padding: 6px; border: 1px solid #ddd; border-radius: 8px; background: #fff; display:flex; flex-direction: column; justify-content: space-between; cursor:pointer; }
+.day.muted { opacity: 0.5; }
+.day-num { font-weight: 700; font-size: 14px; }
+.signup-name { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.signup-form { margin-top: 12px; display:flex; gap: 8px; align-items:center; }
+.signup-form input { padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (max-width: 600px) {
+  .day { min-height: 56px; }
 }

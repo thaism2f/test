@@ -2,26 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Elders Metrowest Calendar</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-group="Elders Metrowest">
-  <h1>🍝 Elders Metrowest – <span id="month-title"></span></h1>
-  <div class="calendar-nav">
-    <button onclick="changeMonth(-1)">⬅️ Back</button>
-    <button onclick="goHome()">🏠 Home</button>
-    <button onclick="changeMonth(1)">Next ➡️</button>
-  </div>
+  <header class="topbar">
+    <h1>🍝 Elders Metrowest – <span id="month-title"></span></h1>
+    <nav class="calendar-nav">
+      <button type="button" onclick="changeMonth(-1)">⬅️ Back</button>
+      <button type="button" onclick="goHome()">🏠 Home</button>
+      <button type="button" onclick="changeMonth(1)">Next ➡️</button>
+    </nav>
+  </header>
+
+  <section class="legend">
+    <div>Tap a date to sign up</div>
+  </section>
+
   <div class="weekdays">
     <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
   </div>
-  <div class="calendar" id="calendar"></div>
-  <div id="form">
+  <div class="calendar" id="calendar" role="grid" aria-label="Calendar"></div>
+
+  <form id="form" class="signup-form" onsubmit="event.preventDefault(); submitForm();" style="display:none;">
     <p id="selected-date-label"></p>
-    <input type="text" id="name" placeholder="Your Name">
-    <button onclick="submitForm()">Submit</button>
-  </div>
-  
+    <label for="name" class="sr-only">Your Name</label>
+    <input type="text" id="name" placeholder="Your Name" autocomplete="name" />
+    <button type="submit">Submit</button>
+  </form>
+
   <script src="calendar.js"></script>
 </body>
 </html>

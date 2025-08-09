@@ -2,7 +2,7 @@
 // Unified Calendar for Missionary Meals (SheetDB-backed)
 (function() {
   const SHEETDB_URL = "https://sheetdb.io/api/v1/wr8bptn1wll6e";
-  const group = document.body.dataset.group; // e.g., "Elders Metrowest"
+  const group = (document.body && document.body.dataset && document.body.dataset.group) || "";
   if (!group) {
     console.error("Missing data-group on <body>.");
   }
@@ -14,6 +14,10 @@
   const selectedDateLabel = document.getElementById("selected-date-label");
   const nameInput = document.getElementById("name");
 
+  if (!calendarEl || !monthTitleEl || !formEl || !selectedDateLabel || !nameInput) {
+    console.error("Missing one or more required DOM elements.");
+  }
+
   // State
   let current = new Date();
   current.setDate(1);
@@ -22,17 +26,17 @@
   let bookings = {};
 
   // Helpers
-  function pad(n){ return n < 10 ? "0"+n : ""+n; }
-  function toISO(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+  const pad = n => (n < 10 ? "0" + n : "" + n);
+  const toISO = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   function fromExcelSerial(serial) {
-    // Excel's epoch: 1899-12-30 (handles the 1900 leap-year bug implicitly)
     try {
-      const epoch = new Date(Date.UTC(1899, 11, 30));
-      const ms = serial * 86400000; // days to ms
+      const epoch = new Date(Date.UTC(1899, 11, 30)); // 1899-12-30
+      const ms = serial * 86400000;
       const d = new Date(epoch.getTime() + ms);
-      // Return as YYYY-MM-DD in local time
-      return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
-    } catch(e) { return null; }
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    } catch (e) {
+      return null;
+    }
   }
 
   function setMonthTitle(d) {
@@ -51,28 +55,30 @@
     setMonthTitle(current);
     calendarEl.innerHTML = "";
     const start = startOfCalendar(current);
-    for (let i=0; i<42; i++) {
+    for (let i = 0; i < 42; i++) {
       const day = new Date(start);
       day.setDate(start.getDate() + i);
       const iso = toISO(day);
-      const div = document.createElement("div");
-      div.className = "day";
+      const cell = document.createElement("button");
+      cell.className = "day";
+      cell.type = "button";
+
       if (day.getMonth() !== current.getMonth()) {
-        div.style.opacity = "0.4";
+        cell.classList.add("muted");
       }
+
       const label = document.createElement("div");
+      label.className = "day-num";
       label.textContent = day.getDate();
+
       const signup = document.createElement("div");
       signup.className = "signup-name";
-      if (bookings[iso]) {
-        signup.textContent = bookings[iso];
-      } else {
-        signup.textContent = "—";
-      }
-      div.appendChild(label);
-      div.appendChild(signup);
-      div.onclick = () => selectDate(iso, bookings[iso] || "");
-      calendarEl.appendChild(div);
+      signup.textContent = bookings[iso] ? bookings[iso] : "—";
+
+      cell.appendChild(label);
+      cell.appendChild(signup);
+      cell.addEventListener("click", () => selectDate(iso, bookings[iso] || ""));
+      calendarEl.appendChild(cell);
     }
   }
 
@@ -86,25 +92,26 @@
 
   async function fetchGroupBookings() {
     try {
-      const url = SHEETDB_URL + "/search?group=" + encodeURIComponent(group);
-      const res = await fetch(url);
+      const url = `${SHEETDB_URL}/search?group=${encodeURIComponent(group)}`;
+      const res = await fetch(url, { method: "GET" });
+      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const data = await res.json();
       const map = {};
       for (const row of data) {
         let iso = null;
-        if (row.date) {
-          if (/^\d+$/.test(String(row.date))) {
-            iso = fromExcelSerial(parseInt(row.date, 10));
-          } else if (/^\d{4}-\d{2}-\d{2}$/.test(String(row.date))) {
-            iso = row.date;
+        const raw = row.date;
+        if (raw !== undefined && raw !== null) {
+          const s = String(raw).trim();
+          if (/^\d+$/.test(s)) {
+            iso = fromExcelSerial(parseInt(s, 10));
+          } else if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+            iso = s;
           } else {
-            // Try Date parse
-            const d = new Date(row.date);
+            const d = new Date(s);
             if (!isNaN(d.getTime())) iso = toISO(d);
           }
         }
         if (iso) {
-          // Only set if not set yet (first-in wins; avoids flicker if duplicates)
           if (!map[iso]) map[iso] = row.name || "";
         }
       }
@@ -115,47 +122,44 @@
   }
 
   async function submitForm() {
-    if (!selectedISO) return;
+    if (!selectedISO) {
+      alert("Please click a date first.");
+      return;
+    }
     const name = (nameInput.value || "").trim();
     if (!name) { alert("Please enter your name."); return; }
-    // Prevent double booking client-side
     if (bookings[selectedISO] && bookings[selectedISO] !== name) {
-      const ok = confirm("This date already has a signup (“"+bookings[selectedISO]+"”). Do you want to replace it? This may create a duplicate row in the sheet.");
+      const ok = confirm(`This date already has “${bookings[selectedISO]}”. Replace it? This will add a new row.`);
       if (!ok) return;
     }
 
     try {
-      const payload = {
-        data: [ { date: selectedISO, group: group, name: name } ]
-      };
+      const payload = { data: [ { date: selectedISO, group: group, name: name } ] };
       const res = await fetch(SHEETDB_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        mode: "cors",
       });
-      if (!res.ok) throw new Error("Network response was not ok");
-      // Reflect immediately in UI
+      if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+      // reflect in UI
       bookings[selectedISO] = name;
       renderCalendar();
       formEl.style.display = "none";
       alert("Saved!");
     } catch (e) {
-      console.error(e);
+      console.error("Save error", e);
       alert("There was a problem saving. Please try again.");
     }
   }
 
-  // Expose controls globally (used by buttons in HTML)
   window.changeMonth = function(delta) {
     current.setMonth(current.getMonth() + delta);
     renderCalendar();
   };
-  window.goHome = function() {
-    window.location.href = "index.html";
-  };
+  window.goHome = function() { window.location.href = "index.html"; };
   window.submitForm = submitForm;
 
-  // Init
   (async function init() {
     setMonthTitle(current);
     await fetchGroupBookings();
